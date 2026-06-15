@@ -1,0 +1,14 @@
+# Maven build output
+backend/target/
+
+# Node modules
+frontend/node_modules/
+frontend/build/
+
+# Secrets - never push these
+backend/src/main/resources/application.properties
+
+# IDE files
+.idea/
+*.iml
+.vscode/
