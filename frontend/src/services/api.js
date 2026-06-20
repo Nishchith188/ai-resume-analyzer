@@ -1,5 +1,4 @@
-const BASE_URL = process.env.REACT_APP_API_URL || "https://ai-resume-analyzer-production-1dca.up.railway.app/api";
-
+const BASE_URL = process.env.REACT_APP_API_URL || "https://ai-resume-analyzer-backend-b7qh.onrender.com/api";
 export const resumeApi = {
   /**
    * Upload a PDF resume and get parsed data back
