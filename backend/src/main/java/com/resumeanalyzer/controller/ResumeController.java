@@ -25,10 +25,6 @@ public class ResumeController {
     public ResponseEntity<ResumeDTO.UploadResponse> uploadResume(
             @RequestParam("file") MultipartFile file) {
         try {
-            String contentType = file.getContentType();
-            if (contentType == null || (!contentType.equals("application/pdf") && !contentType.equals("application/octet-stream"))) {
-                return ResponseEntity.badRequest().build();
-            }
             return ResponseEntity.ok(resumeService.uploadAndParse(file));
         } catch (IOException e) {
             return ResponseEntity.internalServerError().build();
