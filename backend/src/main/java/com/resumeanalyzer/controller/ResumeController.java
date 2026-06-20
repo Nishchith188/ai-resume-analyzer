@@ -12,11 +12,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/resume")
-@CrossOrigin(origins = {
-        "http://localhost:3000",
-        "https://ai-resume-analyzer-nish3.vercel.app",
-        "https://ai-resume-analyzer-one-gilt.vercel.app"
-})
+@CrossOrigin(origins = "*")
 public class ResumeController {
 
     private final ResumeService resumeService;
