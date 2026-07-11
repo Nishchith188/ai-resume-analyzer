@@ -63,6 +63,17 @@ public class AiAnalysisService {
             String.join(", ", skills), experience);
         return callGroqApi(prompt);
     }
+    public String generateInterviewQuestions(String resumeText, String difficulty) {
+    String level = (difficulty == null || difficulty.isBlank()) ? "medium" : difficulty.toLowerCase();
+    String prompt = String.format(
+        "Based on the skills, projects, and experience described in this resume, generate 8 " +
+        "%s-difficulty technical interview questions a recruiter or interviewer would realistically ask.\n" +
+        "Tailor the questions to the candidate's actual projects and tech stack rather than generic theory.\n" +
+        "Keep each question to 1-2 sentences.\n\nResume:\n%s\n\n" +
+        "Return ONLY a numbered list, one question per line, no headers or explanations.",
+        level, resumeText);
+    return callGroqApi(prompt);
+}
 
     private String callGroqApi(String prompt) {
         try {

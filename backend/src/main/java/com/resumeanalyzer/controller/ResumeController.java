@@ -50,6 +50,16 @@ public class ResumeController {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/{id}/interview-questions")
+public ResponseEntity<ResumeDTO.InterviewQuestionsResponse> getInterviewQuestions(
+        @PathVariable Long id,
+        @RequestParam(required = false, defaultValue = "medium") String difficulty) {
+    try {
+        return ResponseEntity.ok(resumeService.getInterviewQuestions(id, difficulty));
+    } catch (RuntimeException e) {
+        return ResponseEntity.notFound().build();
+    }
+}
 
     @GetMapping("/{id}/suggestions")
     public ResponseEntity<ResumeDTO.SuggestionsResponse> getSuggestions(@PathVariable Long id) {

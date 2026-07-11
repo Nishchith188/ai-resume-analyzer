@@ -85,4 +85,16 @@ public class ResumeDTO {
         public List<String> getImprovementTips() { return improvementTips; }
         public void setImprovementTips(List<String> v) { this.improvementTips = v; }
     }
+    public static class InterviewQuestionsResponse {
+    private Long resumeId;
+    private String difficulty;
+    private List<String> questions;
+
+    public Long getResumeId() { return resumeId; }
+    public void setResumeId(Long v) { this.resumeId = v; }
+    public String getDifficulty() { return difficulty; }
+    public void setDifficulty(String v) { this.difficulty = v; }
+    public List<String> getQuestions() { return questions; }
+    public void setQuestions(List<String> v) { this.questions = v; }
+}
 }

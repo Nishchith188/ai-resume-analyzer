@@ -273,6 +273,20 @@ function DashboardPage({ resume, onAnalyze, analysisResult, onReset }) {
   const [skills, setSkills] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [interviewQuestions, setInterviewQuestions] = useState(null);
+  const [interviewDifficulty, setInterviewDifficulty] = useState("medium");
+  const [interviewLoading, setInterviewLoading] = useState(false);
+
+  const generateInterviewQuestions = async (level) => {
+    setInterviewLoading(true); setError("");
+    try {
+      const result = await resumeApi.getInterviewQuestions(resume.id, level);
+      setInterviewQuestions(result);
+      setInterviewDifficulty(level);
+    } catch {
+      setError("Failed to generate interview questions.");
+    } finally { setInterviewLoading(false); }
+  };
 
   const addSkill = (e) => {
     if (e.key === "Enter" && skillInput.trim()) {
@@ -307,7 +321,7 @@ function DashboardPage({ resume, onAnalyze, analysisResult, onReset }) {
       </div>
 
       <div className="tab-row">
-        {["overview", "analysis", "suggestions"].map(t => (
+       {["overview", "analysis", "suggestions", "interview"].map(t => (
           <button key={t} className={`tab ${tab === t ? "active" : ""}`} onClick={() => setTab(t)}>
             {t.charAt(0).toUpperCase() + t.slice(1)}
           </button>
@@ -470,6 +484,41 @@ function DashboardPage({ resume, onAnalyze, analysisResult, onReset }) {
                 </div>
               </div>
             </>
+          )}
+        </>
+      )}
+      {/* ── INTERVIEW QUESTIONS ── */}
+      {tab === "interview" && (
+        <>
+          <div className="card" style={{ marginBottom: 20 }}>
+            <div className="card-title">Generate Interview Questions</div>
+            <div style={{ display: "flex", gap: 10, marginBottom: interviewQuestions ? 20 : 0 }}>
+              {["easy", "medium", "hard"].map(level => (
+                <button key={level}
+                  className={`btn btn-sm ${interviewDifficulty === level && interviewQuestions ? "btn-primary" : "btn-outline"}`}
+                  onClick={() => generateInterviewQuestions(level)}
+                  disabled={interviewLoading}>
+                  {level.charAt(0).toUpperCase() + level.slice(1)}
+                </button>
+              ))}
+            </div>
+            {interviewLoading && <div className="loader-text" style={{marginTop: 16}}>Generating questions…</div>}
+          </div>
+
+          {interviewQuestions && !interviewLoading && (
+            <div className="card">
+              <div className="card-title">
+                {interviewQuestions.difficulty.charAt(0).toUpperCase() + interviewQuestions.difficulty.slice(1)} Questions
+              </div>
+              <div className="tip-list">
+                {interviewQuestions.questions?.map((q, i) => (
+                  <div key={i} className="tip">
+                    <div className="tip-num">{i + 1}</div>
+                    <div className="tip-text">{q}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </>
       )}

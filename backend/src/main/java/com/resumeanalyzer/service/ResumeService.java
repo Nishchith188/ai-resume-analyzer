@@ -108,6 +108,24 @@ public class ResumeService {
         }
         return response;
     }
+    public ResumeDTO.InterviewQuestionsResponse getInterviewQuestions(Long id, String difficulty) {
+    Resume resume = resumeRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Resume not found with id: " + id));
+
+    String level = (difficulty == null || difficulty.isBlank()) ? "medium" : difficulty;
+    String raw = aiAnalysisService.generateInterviewQuestions(resume.getRawText(), level);
+
+    List<String> questions = Arrays.stream(raw.split("\n"))
+        .filter(line -> line.matches("^\\d+\\..*"))
+        .map(line -> line.replaceFirst("^\\d+\\.\\s*", ""))
+        .toList();
+
+    ResumeDTO.InterviewQuestionsResponse response = new ResumeDTO.InterviewQuestionsResponse();
+    response.setResumeId(id);
+    response.setDifficulty(level);
+    response.setQuestions(questions);
+    return response;
+}
 
     public Resume getResume(Long id) {
         return resumeRepository.findById(id)
