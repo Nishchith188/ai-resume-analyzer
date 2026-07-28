@@ -47,12 +47,4 @@ export const resumeApi = {
     if (!response.ok) throw new Error("Failed to get suggestions");
     return response.json();
   },
-  /**
-   * Get AI-generated interview questions for a resume
-   */
-  getInterviewQuestions: async (id, difficulty = "medium") => {
-    const response = await fetch(`${BASE_URL}/resume/${id}/interview-questions?difficulty=${difficulty}`);
-    if (!response.ok) throw new Error("Failed to get interview questions");
-    return response.json();
-  },
 };
